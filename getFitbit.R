@@ -6,7 +6,7 @@
 ## 5. Once app is set up, click on OAuth 2.0 tutorial page and follow each step of the page.
 ## 6. If using 1 year authorization via Implicit Grant Flow, make sure change the time frame to 31536000, other numbers will defalt to 1 day.
 ## 7. Ask each user to click on the link and authorise, then obtain obtain API token.
-## 7. Store API tokens securely. Example below stores API token securely elsewhere and reads it in.
+## 8. Store API tokens securely. Example below stores API token securely elsewhere and reads it in.
 
 library(data.table)
 library(curl)
