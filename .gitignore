@@ -1,0 +1,7 @@
+.R~
+.Rproj.user/
+.Rproj.user
+*.Rproj
+*.*~
+*.Rhistory
+.DS_Store
