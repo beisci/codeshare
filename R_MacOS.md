@@ -1,6 +1,6 @@
-# Install R and compile packages from source on MacOS
+# Install R and compile packages from source on macOS
 
-Latest versions of MacOS have a lot of problems when it comes to installing R and making it compile packages from source smoothly. Here are the steps that led to successful installation of R on a new Mac lately, with no issues compiling from source. Please google for the latest download links the texts refer to.
+Latest versions of macOS have a lot of problems when it comes to installing R and making it compile packages from source smoothly. Here are the steps that led to successful installation of R on a new Mac lately, with no issues compiling from source. Please google for the latest download links the texts refer to.
 
 ## 1. Installing X Code from App Store
 After installation, open it to accept terms; then need to install command line tools: go to terminal, type in `xcode-select --install`.
