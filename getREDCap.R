@@ -13,7 +13,7 @@ redcap_api <-fread("~/location/REDCapAPI.csv")
 
 ## Uncomment below to retrieve specific records or varibles
 ## return_records <- c(1, 4)
-## desired_fields <- c("id", "name", "age")
+## return_fields <- c("id", "name", "age")
 
 d <- as.data.table(redcap_read(redcap_uri = "https://redcap.cdms.org.au/api/",
                                token = redcap_api[proj == "ProjectName", .(api)],
