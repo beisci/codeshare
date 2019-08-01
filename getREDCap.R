@@ -3,7 +3,7 @@
 library(data.table)
 library(REDCapR)
 
-## Store and read in API tokens from a severe location
+## Store and read in API tokens from a secure location
 ## I have two variables for the file I use:
 ## proj: name of the project,
 ## api: corresponding API token
