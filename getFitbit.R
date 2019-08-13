@@ -57,7 +57,7 @@ fitbit <- do.call(rbind,
       TIB = x$timeInBed,
       TST = x$minutesAsleep)
 }))
-
+    temp <- as.data.table(temp)
     temp[, FitbitAPI := y]
     return(copy(temp))
 }))
