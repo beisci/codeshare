@@ -20,7 +20,7 @@ library(kableExtra)
 
 redcap_api <-fread("~/EXAMPLE_PATH/REDCapAPI.csv")
 
-d <- as.data.table(redcap_read(redcap_uri = "https://redcap.cdms.org.au/api/",
+d <- as.data.table(redcap_read(redcap_uri = "https://redcap.helix.monash.edu/api/",
             token = as.character(redcap_api[proj == "healthysleepdiary", .(api)]),
             export_survey_fields = TRUE)$data)
 
@@ -62,13 +62,13 @@ d[LOhr > 5.5, LOhr := LOhr + 12 - 24]
 
 d[, TIBhr := RThr - BThr]
 d[TIBhr < 0, TIBhr := NA_real_]
-d[, TSTshr := tstshr + tstsmin/60] #subjective TSThr
+d[, TSTshr := as.numeric(tstshr) + as.numeric(tstsmin)/60] #subjective TSThr
 #d[, TSThr := TIBhr - SOL/60 - WASOT/60 - SNZ/60 - (RThr - WThr)]
 d[, SEs := TSTshr/TIBhr*100]
 d[SEs > 100, SEs := 100]
 
-d[, SOL := solhr * 60 + solmin]
-d[, WASOT := wasohr * 60 + wasomin]
+d[, SOL := as.numeric(solhr) * 60 + as.numeric(solmin)]
+d[, WASOT := as.numeric(wasohr) * 60 + as.numeric(wasomin)]
 
 ## Make medication and notes summary
 
