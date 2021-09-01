@@ -3,6 +3,9 @@ library(lubridate)
 
 ## Function to get exposure advice for the past n days and all current advice
 ## For exposure sites added today, n = 0.
+## To integrate as an Alfred (https://www.alfredapp.com) workflow,
+## add an action after keyword to call the script using "Terminal Command": Rscript PATH/TO/SCRIPT/COVIDexpo.R
+## Then activate via Alfred
 
 COVIDexpo <- function(n, sub){
   ## Get data
