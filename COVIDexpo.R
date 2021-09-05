@@ -27,19 +27,19 @@ COVIDexpo <- function(n, sub, lga) {
   ## Sort by suburb and exposure sites
   setkeyv(d, c("Suburb", "Site_title"))
 
-  print("New cases over the past day in my LGAs:")
-  print(table(dn[Localgovernmentarea %in% lga & diagnosis_date >= (Sys.Date() -1)]$Localgovernmentarea))
+  print("New cases over the past day in my LGAs:", quote = FALSE)
+  print(table(dn[Localgovernmentarea %in% lga & diagnosis_date >= (Sys.Date() -1)]$Localgovernmentarea), row.names = FALSE)
   
-  print("Total new cases over the past day in Victoria:")
+  print("Total new cases over the past day in Victoria:", quote = FALSE)
   print(dn[diagnosis_date >= (Sys.Date() - 1), .N])
   
-  print(paste0("Exposure sites posted in the last ", n, " days:"))
+  print(paste0("Exposure sites posted in the last ", n, " days:"), quote = FALSE)
   if(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .N] == 0) {
-    print("None.")
+    print("None.", quote = FALSE)
   } else {
     print(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .(myAdvice)])
   }
-  print("All current exposure sites:")
+  print("All current exposure sites:", quote = FALSE)
   print(d[Suburb %in% sub, .(myAdvice)])
 }
 
