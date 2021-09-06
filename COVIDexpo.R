@@ -24,22 +24,33 @@ COVIDexpo <- function(n, sub, lga) {
   d[, Added_date := as.Date(parse_date_time(Added_date, orders = c('dmy', 'mdy', 'ymd')))] # in case format changes
   dn[, diagnosis_date := as.Date(parse_date_time(diagnosis_date, orders = c('ymd', 'dmy', 'mdy')))]
 
-  ## Sort by suburb and exposure sites
-  setkeyv(d, c("Suburb", "Site_title"))
+  ## Rename and sort
+  setnames(dn, c("Localgovernmentarea", "diagnosis_date"), c("LGA", "Diagnosed"))
 
-  print("New cases over the past day in my LGAs:", quote = FALSE)
-  print(table(dn[Localgovernmentarea %in% lga & diagnosis_date >= (Sys.Date() -1)]$Localgovernmentarea), row.names = FALSE)
-  
-  print("Total new cases over the past day in Victoria:", quote = FALSE)
-  print(dn[diagnosis_date >= (Sys.Date() - 1), .N])
-  
-  print(paste0("Exposure sites posted in the last ", n, " days:"), quote = FALSE)
+  setkeyv(d, c("Suburb", "Site_title"))
+  setkeyv(dn, c("LGA", "Postcode", "Diagnosed"))
+
+  cat("Current total new daily cases in Victoria:", "\n")
+  cat(dn[Diagnosed >= (Sys.Date() - 1), .N], "\n")
+
+  cat("Total new cases from the previous day in Victoria:", "\n")
+  cat(dn[Diagnosed == (Sys.Date() - 2), .N], "\n")
+
+  cat("New cases over the past day in my LGAs:", "\n")
+  print(table(dn[LGA %in% lga & Diagnosed >= (Sys.Date() -1)]$LGA), row.names = FALSE)
+
+  cat(paste0("Relevant exposure sites posted in the last ", n, " days:"), "\n")
   if(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .N] == 0) {
-    print("None.", quote = FALSE)
+    cat("None.", "\n")
   } else {
     print(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .(myAdvice)])
   }
-  print("All current exposure sites:", quote = FALSE)
+
+  cat(paste0("New cases in my LGAs over the last ", n, " days:"), "\n")
+  print(dn[LGA %in% lga & Diagnosed >= (Sys.Date() - n),
+           .(Diagnosed, LGA, Postcode, acquired)])
+  
+  cat("All current exposure sites:", "\n")
   print(d[Suburb %in% sub, .(myAdvice)])
 }
 
@@ -51,5 +62,5 @@ mySuburbs <- c("Notting Hill", "Clayton",
 
 myLGA <- c("Glen Eira (C)", "Bayside (C)", "Monash (C)", "Melbourne (C)")
 
-## Get report for past 2 days and all current advice
-COVIDexpo(n = 2, sub = mySuburbs, lga = myLGA)
+## Get report for past 3 days and all current advice
+COVIDexpo(n = 3, sub = mySuburbs, lga = myLGA)
