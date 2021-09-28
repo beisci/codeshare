@@ -16,6 +16,10 @@ COVIDexpo <- function(n, sub, lga) {
   dn <- fread("https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv")
   ## Source: https://www.coronavirus.vic.gov.au/victorian-coronavirus-covid-19-data
 
+  ## Get active case numbers
+  da <- fread("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9oKYNQhJ6v85dQ9qsybfMfc-eaJ9oKVDZKx-VGUr6szNoTbvsLTzpEaJ3oW_LZTklZbz70hDBUt-d/pub?gid=0&single=true&output=csv")
+  ## Source: https://www.coronavirus.vic.gov.au/victorian-coronavirus-covid-19-data
+
   ## Get the risk tier
   d$Tier <- substr(d$Advice_title, 1, 6)
   
@@ -31,27 +35,31 @@ COVIDexpo <- function(n, sub, lga) {
   setkeyv(dn, c("LGA", "Postcode", "Diagnosed"))
 
   cat("Current total new daily cases in Victoria:", "\n")
-  cat(dn[Diagnosed >= (Sys.Date() - 1), .N], "\n")
+  cat(dn[Diagnosed >= (Sys.Date() - 1), .N], "\n\n")
 
   cat("Total new cases from the previous day in Victoria:", "\n")
   cat(dn[Diagnosed == (Sys.Date() - 2), .N], "\n")
 
-  cat("New cases over the past day in my LGAs:", "\n")
+  cat("\nNew cases over the past day in my LGAs:")
   print(table(dn[LGA %in% lga & Diagnosed >= (Sys.Date() -1)]$LGA), row.names = FALSE)
 
-  cat(paste0("Relevant exposure sites posted in the last ", n, " days:"), "\n")
-  if(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .N] == 0) {
-    cat("None.", "\n")
-  } else {
-    print(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .(myAdvice)])
-  }
+  cat("\nActive and total cases in my LGAs:", "\n")
+  print(da[LGA %in% lga, .(LGA, active, cases)], row.names = FALSE)
 
-  cat(paste0("New cases in my LGAs over the last ", n, " days:"), "\n")
+  ## cat(paste0("\nRelevant exposure sites posted in the last ", n, " days:\n"))
+  ## if(d[Suburb %in% sub & Added_date >= (Sys.Date() - n), .N] == 0) {
+  ##   cat("None.", "\n")
+  ## } else {
+  ##   print(table(d[Suburb %in% sub & Added_date >= (Sys.Date() - n)]$myAdvice),
+  ##         row.names = FALSE, col.names = FALSE)
+  ## }
+
+  cat("\nAll current exposure sites:\n")
+  cat(d[Suburb %in% sub]$myAdvice, sep = "\n")
+
+  cat(paste0("\nNew cases in my LGAs over the last ", n, " days:"))
   print(dn[LGA %in% lga & Diagnosed >= (Sys.Date() - n),
            .(Diagnosed, LGA, Postcode, acquired)])
-  
-  cat("All current exposure sites:", "\n")
-  print(d[Suburb %in% sub, .(myAdvice)])
 }
 
 ## Personalise suburbs and LGA for the output
