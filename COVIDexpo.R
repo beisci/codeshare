@@ -58,8 +58,8 @@ COVIDexpo <- function(n, sub, lga) {
   cat(d[Suburb %in% sub]$myAdvice, sep = "\n")
 
   cat(paste0("\nNew cases in my LGAs over the last ", n, " days:"))
-  print(dn[LGA %in% lga & Diagnosed >= (Sys.Date() - n),
-           .(Diagnosed, LGA, Postcode, acquired)])
+  print(as.data.frame(dn[LGA %in% lga & Diagnosed >= (Sys.Date() - n),
+           .(Diagnosed, LGA, Postcode, acquired)]))
 }
 
 ## Personalise suburbs and LGA for the output
@@ -71,4 +71,4 @@ mySuburbs <- c("Notting Hill", "Clayton",
 myLGA <- c("Glen Eira (C)", "Bayside (C)", "Monash (C)", "Melbourne (C)")
 
 ## Get report for past 3 days and all current advice
-COVIDexpo(n = 3, sub = mySuburbs, lga = myLGA)
+COVIDexpo(n = 2, sub = mySuburbs, lga = myLGA)
