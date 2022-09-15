@@ -14,13 +14,13 @@ d <- data.table(
   dep = c(48, 50.5, 46),
   anx = c(50, 45, 48.5))
 
-## There may already by a codebook to bulk import variable features, in that case read in.
-## Here we make one up.
+## There may already be a codebook to bulk import variable info, in that case read in.
+## Here we just make one up
 d.attri <- data.table(
   vname = c("id", "age", "sex", "dep", "anx"),
   vinfo = c("ID variable",
             "Participant age in years",
-            "2 categories of males or females",
+            "2 categories: males or females",
             "Score of depression",
             "Score of anxiety"),
   scale = c("none", "demo", "demo", "mood", "mood"))
@@ -33,16 +33,18 @@ setattr(d$age, "vinfo", "whatever you want to label")
 ## Example of matching to the attribute table for a single variable.
 setattr(d$id, "vinfo", d.attri[vname == "id"]$vdes)
 
-## Example of merging in attributes in bulk
+## Example of merging in attributes in bulk from imported codebook
+## Make sure variable names are exactly the same across data and the imported codebook
 for (var in names(d)){
   setattr(d[[var]], "vinfo", d.attri[vname == var]$vinfo)
   setattr(d[[var]], "scale", d.attri[vname == var]$scale)
 }
 
 ## Example of checking individual variable attribute
+## This one below checks which "scale" variable age is from
 attr(d$age, "scale")
 
-## Exporting all variable names with their attributes
+## Exporting all variable names with their attributes for complete codebook
 codebook <- data.table(
   vname = names(d),
   vinfo = unlist(lapply(d, attr, "vinfo")),
