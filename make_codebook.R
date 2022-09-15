@@ -31,7 +31,7 @@ d.attri <- data.table(
 setattr(d$age, "vinfo", "whatever you want to label")
 
 ## Example of matching to the attribute table for a single variable.
-setattr(d$id, "vinfo", d.attri[vname == "id"]$vdes)
+setattr(d$id, "vinfo", d.attri[vname == "id"]$vinfo)
 
 ## Example of merging in attributes in bulk from imported codebook
 ## Make sure variable names are exactly the same across data and the imported codebook
